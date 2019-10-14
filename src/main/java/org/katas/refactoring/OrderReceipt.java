@@ -17,6 +17,8 @@ public class OrderReceipt {
     }
 
     private class ReceiptPrinter{
+        public static final double TAX_RATE = .10;
+
         private final StringBuilder output;
 
         private ReceiptPrinter() {
@@ -34,24 +36,13 @@ public class OrderReceipt {
                 appendWithNewLine(lineItem.totalAmount());
             }
 
-            double totSalesTx = 0d;
-            double tot = 0d;
-            for (LineItem lineItem : order.getLineItems()) {
-                // calculate sales tax @ rate of 10%
-                double salesTax = lineItem.totalAmount() * .10;
-                totSalesTx += salesTax;
-
-                // calculate total amount of lineItem = price * quantity + 10 % sales tax
-                tot += lineItem.totalAmount() + salesTax;
-            }
-
             // prints the state tax
             appendWithTab("Sales Tax");
-            append(totSalesTx);
+            append(getTotalSalesTax());
 
             // print total amount
             appendWithTab("Total Amount");
-            append(tot);
+            append(getTotal());
 
             return output.toString();
         }
@@ -60,6 +51,20 @@ public class OrderReceipt {
             appendWithNewLine("======Printing Orders======\n");
             append(order.getCustomerName());
             append(order.getCustomerAddress());
+        }
+
+        private double getTotalSalesTax(){
+            return order.getLineItems().stream()
+                    .mapToDouble(LineItem::totalAmount)
+                    .map(totalAmount -> totalAmount * TAX_RATE)
+                    .sum();
+        }
+
+        private double getTotal() {
+            return order.getLineItems().stream()
+                    .mapToDouble(LineItem::totalAmount)
+                    .map(totalAmount -> totalAmount+ totalAmount * TAX_RATE)
+                    .sum();
         }
 
         private void appendWithTab(Object object) {
