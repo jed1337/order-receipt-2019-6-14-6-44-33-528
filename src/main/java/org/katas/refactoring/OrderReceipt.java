@@ -27,14 +27,16 @@ public class OrderReceipt {
             printHeaders();
 
             // prints lineItems
-            double totSalesTx = 0d;
-            double tot = 0d;
             for (LineItem lineItem : order.getLineItems()) {
                 appendWithTab(lineItem.getDescription());
                 appendWithTab(lineItem.getPrice());
                 appendWithTab(lineItem.getQuantity());
                 appendWithNewLine(lineItem.totalAmount());
+            }
 
+            double totSalesTx = 0d;
+            double tot = 0d;
+            for (LineItem lineItem : order.getLineItems()) {
                 // calculate sales tax @ rate of 10%
                 double salesTax = lineItem.totalAmount() * .10;
                 totSalesTx += salesTax;
@@ -45,29 +47,32 @@ public class OrderReceipt {
 
             // prints the state tax
             appendWithTab("Sales Tax");
-            output.append(totSalesTx);
+            append(totSalesTx);
 
             // print total amount
             appendWithTab("Total Amount");
-            output.append(tot);
+            append(tot);
 
             return output.toString();
         }
 
+        private void printHeaders() {
+            appendWithNewLine("======Printing Orders======\n");
+            append(order.getCustomerName());
+            append(order.getCustomerAddress());
+        }
+
         private void appendWithTab(Object object) {
-            output.append(object);
-            output.append('\t');
+            append(object);
+            append('\t');
         }
 
         private void appendWithNewLine(Object object) {
-            output.append(object);
-            output.append('\n');
+            append(object);
+            append('\n');
         }
-
-        private void printHeaders() {
-            output.append("======Printing Orders======\n");
-            output.append(order.getCustomerName());
-            output.append(order.getCustomerAddress());
+        private void append(Object object){
+            output.append(object);
         }
     }
 }
