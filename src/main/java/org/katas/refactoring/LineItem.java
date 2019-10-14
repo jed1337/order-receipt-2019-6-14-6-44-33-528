@@ -1,9 +1,9 @@
 package org.katas.refactoring;
 
 public class LineItem {
-    private String desc;
-    private double p;
-    private int qty;
+    private final String desc;
+    private final double p;
+    private final int qty;
 
     public LineItem(String desc, double p, int qty) {
         super();
@@ -24,7 +24,7 @@ public class LineItem {
         return qty;
     }
 
-    double totalAmount() {
+    public double totalAmount() {
         return p * qty;
     }
 }

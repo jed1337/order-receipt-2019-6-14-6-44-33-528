@@ -3,9 +3,9 @@ package org.katas.refactoring;
 import java.util.List;
 
 public class Order {
-    String nm;
-    String addr;
-    List<LineItem> li;
+    private final String nm;
+    private final String addr;
+    private final List<LineItem> li;
 
     public Order(String nm, String addr, List<LineItem> li) {
         this.nm = nm;
