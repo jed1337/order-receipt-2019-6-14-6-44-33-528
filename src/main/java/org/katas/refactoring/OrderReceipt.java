@@ -27,22 +27,9 @@ public class OrderReceipt {
 
         public String printReceipt() {
             printHeaders();
-
-            // prints lineItems
-            for (LineItem lineItem : order.getLineItems()) {
-                appendWithTab(lineItem.getDescription());
-                appendWithTab(lineItem.getPrice());
-                appendWithTab(lineItem.getQuantity());
-                appendWithNewLine(lineItem.totalAmount());
-            }
-
-            // prints the state tax
-            appendWithTab("Sales Tax");
-            append(getTotalSalesTax());
-
-            // print total amount
-            appendWithTab("Total Amount");
-            append(getTotal());
+            printLineItems();
+            printStateTax();
+            printTotalAmount();
 
             return output.toString();
         }
@@ -53,11 +40,30 @@ public class OrderReceipt {
             append(order.getCustomerAddress());
         }
 
+        private void printLineItems() {
+            for (LineItem lineItem : order.getLineItems()) {
+                appendWithTab(lineItem.getDescription());
+                appendWithTab(lineItem.getPrice());
+                appendWithTab(lineItem.getQuantity());
+                appendWithNewLine(lineItem.totalAmount());
+            }
+        }
+
+        private void printStateTax() {
+            appendWithTab("Sales Tax");
+            append(getTotalSalesTax());
+        }
+
         private double getTotalSalesTax(){
             return order.getLineItems().stream()
                     .mapToDouble(LineItem::totalAmount)
                     .map(totalAmount -> totalAmount * TAX_RATE)
                     .sum();
+        }
+
+        private void printTotalAmount() {
+            appendWithTab("Total Amount");
+            append(getTotal());
         }
 
         private double getTotal() {
@@ -76,6 +82,7 @@ public class OrderReceipt {
             append(object);
             append('\n');
         }
+
         private void append(Object object){
             output.append(object);
         }
