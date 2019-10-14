@@ -1,10 +1,5 @@
 package org.katas.refactoring;
 
-/**
- * OrderReceipt prints the details of order including customer name, address, description, quantity, price and amount.
- * calculates the sales tax @ 10% and prints as part of order.
- * computes the total order amount (amount of individual lineItems + total sales tax) and prints it.
- */
 public class OrderReceipt {
     private Order order;
 
@@ -16,7 +11,7 @@ public class OrderReceipt {
         return new ReceiptPrinter().printReceipt();
     }
 
-    private class ReceiptPrinter{
+    private class ReceiptPrinter {
         public static final double TAX_RATE = .10;
 
         private final StringBuilder output;
@@ -54,7 +49,7 @@ public class OrderReceipt {
             append(getTotalSalesTax());
         }
 
-        private double getTotalSalesTax(){
+        private double getTotalSalesTax() {
             return order.getLineItems().stream()
                     .mapToDouble(LineItem::totalAmount)
                     .map(totalAmount -> totalAmount * TAX_RATE)
@@ -69,7 +64,7 @@ public class OrderReceipt {
         private double getTotal() {
             return order.getLineItems().stream()
                     .mapToDouble(LineItem::totalAmount)
-                    .map(totalAmount -> totalAmount+ totalAmount * TAX_RATE)
+                    .map(totalAmount -> totalAmount + totalAmount * TAX_RATE)
                     .sum();
         }
 
@@ -83,7 +78,7 @@ public class OrderReceipt {
             append('\n');
         }
 
-        private void append(Object object){
+        private void append(Object object) {
             output.append(object);
         }
     }
